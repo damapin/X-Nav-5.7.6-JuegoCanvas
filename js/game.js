@@ -34,12 +34,23 @@ princessImage.onload = function () {
 };
 princessImage.src = "images/princess.png";
 
+// stone1 image
+var stone1Ready = false;
+var stone1Image = new Image();
+stone1Image.onload = function () {
+	stone1Ready = true;
+};
+stone1Image.src = "images/stone.png";
+
+
 // Game objects
 var hero = {
 	speed: 256 // movement in pixels per second
 };
 var princess = {};
 var princessesCaught = 0;
+
+var stone1 = {};
 
 // Handle keyboard controls
 var keysDown = {};
@@ -60,21 +71,46 @@ var reset = function () {
 	// Throw the princess somewhere on the screen randomly
 	princess.x = 32 + (Math.random() * (canvas.width - 64));
 	princess.y = 32 + (Math.random() * (canvas.height - 64));
+
+	stone1.x = 225;
+	stone1.y = 306;
 };
 
 // Update game objects
 var update = function (modifier) {
-	if (38 in keysDown) { // Player holding up
-		hero.y -= hero.speed * modifier;
+	if (38 in keysDown){ // Player holding up
+
+		// upper border makes him stop
+		if(hero.y > 32)
+		   hero.y -= hero.speed * modifier;
+		else
+			hero.y = 32;
 	}
+
+	// lower border makes him stop
 	if (40 in keysDown) { // Player holding down
-		hero.y += hero.speed * modifier;
+		if(hero.y < (canvas.height-64))
+		   hero.y += hero.speed * modifier;
+		else
+			hero.y = canvas.height-65;
 	}
+
 	if (37 in keysDown) { // Player holding left
-		hero.x -= hero.speed * modifier;
+		
+		// left border makes him stop
+		if(hero.x > 32)
+			hero.x -= hero.speed * modifier;
+		else
+			hero.x = 32;
 	}
+
 	if (39 in keysDown) { // Player holding right
-		hero.x += hero.speed * modifier;
+
+		// right border makes him stop
+		if(hero.x < (canvas.width - 64))
+			hero.x += hero.speed * modifier;
+		else
+			hero.x = canvas.width - 64;
 	}
 
 	// Are they touching?
@@ -101,6 +137,10 @@ var render = function () {
 
 	if (princessReady) {
 		ctx.drawImage(princessImage, princess.x, princess.y);
+	}
+
+	if (stone1Ready) {
+		ctx.drawImage(stone1Image, stone1.x, stone1.y);
 	}
 
 	// Score
