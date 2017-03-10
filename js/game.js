@@ -48,7 +48,7 @@ var hero = {
 	speed: 256 // movement in pixels per second
 };
 var princess = {};
-var princessesCaught = 0;
+var princessesCaught = localStorage.getItem('princessesCaught');
 
 var stone1 = {};
 
@@ -149,6 +149,7 @@ var render = function () {
 	ctx.textAlign = "left";
 	ctx.textBaseline = "top";
 	ctx.fillText("Princesses caught: " + princessesCaught, 32, 32);
+	localStorage.setItem('princessesCaught', princessesCaught);
 };
 
 // The main game loop
